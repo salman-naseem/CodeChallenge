@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#C4F8DD9D</color>
+    <color name="colorPrimaryDark">#50514F</color>
+    <color name="colorAccent">#086788</color>
+
+    <color name="seaBlue">#086788</color>
+    <color name="dark">#50514F</color>
+    <color name="lightBeige">#C4F8DD9D</color>
+    <color name="seaGreen">#199383</color>
+    <color name="red">#AD0A0A</color>
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
+    <color name="dullWhite">#E8EEF2</color>
+    <color name="themeWhite">#F5F5F5</color>
+</resources>

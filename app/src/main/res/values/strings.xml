@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CodeChallenge</string>
+    <string name="search">Search Here</string>
+    <string name="loading">Loading...</string>
+    <string name="network_not_available">Network not available!</string>
+    <string name="artist"><b>Artist:</b></string>
+    <string name="category"><b>Category:</b></string>
+</resources>

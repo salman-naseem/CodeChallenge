@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_viewflipper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/themeWhite">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/dark"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_8dp">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="@dimen/_8dp"
+                android:src="@drawable/logo"
+                android:tint="@color/themeWhite" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/themeWhite" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="@dimen/_8dp"
+                android:background="@drawable/rounded_corner_with_border"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".85"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:hint="@string/search"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/_18dp"
+                    android:paddingEnd="@dimen/_18dp"
+                    android:textColor="@color/dark"
+                    android:textSize="@dimen/_18sp" />
+
+                <ImageView
+                    android:id="@+id/iv_search_icon"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".15"
+                    android:padding="@dimen/_8dp"
+                    android:src="@drawable/ic_search" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_18dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8dp"
+        android:layout_gravity="center"
+        android:drawableTop="@drawable/ic_wifi_unavailable"
+        android:drawablePadding="@dimen/_8dp"
+        android:text="@string/network_not_available"
+        android:textColor="@color/red"
+        android:textSize="@dimen/_18sp" />
+</ViewFlipper>
