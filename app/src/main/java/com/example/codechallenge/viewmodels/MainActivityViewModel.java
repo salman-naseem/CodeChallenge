@@ -90,34 +90,28 @@ public class MainActivityViewModel extends ViewModel implements NetworkCallbacks
 
     public void search(String str) {//Search method is used to search the list by Artwork or Artist
 
-        //TODO:  I struggled while implementing the logic of search both (by Artwork and Artist)
+        List<GetArtworksQuery.Artwork> searchList = new ArrayList<>(originalData.getValue());
 
-        /*
-        The logic i implemented is to check that search string contains " ". If " " exist then split the string by " " and search both
-        words in list. If word contain in Artist or Artwork add that item in searchList. By this logic we got the list of items but not
-        the exact same item. We can counter this by again looping the search list and eliminate the extra items but i'm not liking that
-        logic. Kindly guide me with better solution.
-        */
+        String[] strArray = str.split(" ");//uncomment
+        searchList = isContain(searchList, strArray[0]);
+        
+        if(strArray.length > 1) {
+            searchList = isContain(searchList, strArray[1]);
+        }
 
-        List<GetArtworksQuery.Artwork> searchList = new ArrayList<>();
-
-        /*Search by both logic is commented below*/
-
-//        String[] strArray = str.split(" ");//uncomment
-//        for (String s : strArray) {//uncomment
-//            if (s.isEmpty()) {//uncomment
-//                continue;//uncomment
-//            }//uncomment
-            for (GetArtworksQuery.Artwork item : originalData.getValue()) {
-                //TODO: If you uncommented the "Search By Both" logic, then Kindly change the below "str" variable to "s". Thanks:)
-                if (item.title().toLowerCase().contains(str.toLowerCase())) {//Check if search string contain in Title
-                    searchList.add(item);
-                } else if (item.artist_names().toLowerCase().contains(str.toLowerCase())) {//Check if search string contain in Artist
-                    searchList.add(item);
-                }
-            }
-//        }//uncomment
         listArticles.setValue(searchList);//Setting the searchList value
+    }
+
+    private List<GetArtworksQuery.Artwork> isContain(List<GetArtworksQuery.Artwork> listToSearchIn, String str){
+        for (int i = 0; i < listToSearchIn.size(); i++) {
+            if (listToSearchIn.get(i).title().toLowerCase().contains(str.toLowerCase()) || listToSearchIn.get(i).artist_names().toLowerCase().contains(str.toLowerCase())) {
+                continue;
+            } else {
+                listToSearchIn.remove(i);
+                i--;
+            }
+        }
+        return listToSearchIn;
     }
 
     public LiveData<Boolean> getIsUpdating() {//Returning the LiveData object to observe
