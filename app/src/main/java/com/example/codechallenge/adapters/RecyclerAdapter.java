@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.codechallenge.R;
 import com.example.codechallenge.callbacks.ItemClickListener;
+import com.example.codechallenge.utils.Validations;
 import com.example.trimulabstask.GetArtworksQuery;
 
 import java.util.List;
@@ -46,10 +47,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         GetArtworksQuery.Artwork dataItem = listArticles.get(position);//Get DataItem by position
         RequestOptions defaultOptions = new RequestOptions()
                 .error(R.drawable.ic_image); //On Glide call failed/timeout, this image will be used as default
-        Glide.with(mContext)
-                .applyDefaultRequestOptions(defaultOptions)
-                .load(Objects.requireNonNull(dataItem.images().get(0).cropped().url()))//providing url
-                .into(holder.itemPic);//imageView reference where image will be loaded
+        if(dataItem.images().size() != 0) {
+            Glide.with(mContext)
+                    .applyDefaultRequestOptions(defaultOptions)
+                    .load(Objects.requireNonNull(dataItem.images().get(0).cropped().url()))//providing url
+                    .into(holder.itemPic);//imageView reference where image will be loaded
+        }
         holder.tvTitle.setText(dataItem.title());//Set title in TextView
         String artistName = mContext.getString(R.string.artist) + " " + dataItem.artist_names();
         holder.tvSubTitle.setText(artistName);//Set artistName in TextView

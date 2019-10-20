@@ -1,11 +1,8 @@
 package com.example.codechallenge;
 
 import androidx.test.filters.SmallTest;
-
 import com.example.codechallenge.activities.MainActivity;
-
 import junit.framework.TestCase;
-
 
 public class MainActivityUnitTest extends TestCase {
 
@@ -17,7 +14,8 @@ public class MainActivityUnitTest extends TestCase {
     @SmallTest
     public void testFailedCase(){
         MainActivity mainActivity = new MainActivity();
-        boolean result = mainActivity.isAlphaNumericAndApaceOnly("$");
-        assertFalse(result);
+        mainActivity.mMainActivityViewModel.getDataList().observe(mainActivity, artworkList -> {
+            assertFalse(artworkList.isEmpty());
+        });
     }
 }

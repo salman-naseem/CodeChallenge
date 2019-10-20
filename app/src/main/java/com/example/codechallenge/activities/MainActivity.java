@@ -3,6 +3,7 @@ package com.example.codechallenge.activities;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
@@ -15,11 +16,16 @@ import com.example.codechallenge.adapters.RecyclerAdapter;
 import com.example.codechallenge.callbacks.ItemClickListener;
 import com.example.codechallenge.utils.DialogBuilder;
 import com.example.codechallenge.utils.HelperMethods;
+import com.example.codechallenge.utils.MessageUtil;
+import com.example.codechallenge.utils.Validations;
 import com.example.codechallenge.viewmodels.MainActivityViewModel;
 import com.example.trimulabstask.GetArtworksQuery;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -40,9 +46,10 @@ public class MainActivity extends BaseActivity implements ItemClickListener {
     ImageView ivSearchIcon;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
+    private View rootView;
     private RecyclerAdapter mAdapter;
     private List<GetArtworksQuery.Artwork> adapterData;
-    private MainActivityViewModel mMainActivityViewModel;
+    public MainActivityViewModel mMainActivityViewModel;
     private DialogBuilder dialogBuilder;
     private boolean isSearching;
     private String strSearch;
@@ -94,15 +101,21 @@ public class MainActivity extends BaseActivity implements ItemClickListener {
         flipView(state);
     }
 
-
     @OnTextChanged(R.id.et_search)void onTextChange(){
-        if(etSearch.getText().toString().length() > 0){//If user entered character, start search
-            isSearching = true;
-            strSearch = etSearch.getText().toString();
-            mMainActivityViewModel.search(strSearch);//search the user entered string
-            ivSearchIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_close));//Changing icon
+        if(fieldValidation()){//If user entered character, start search
+            if(isAlphaNumericAndApaceOnly(etSearch.getText().toString())) {
+                etSearch.setTextColor(getResources().getColor(R.color.dark));
+                isSearching = true;
+                strSearch = etSearch.getText().toString();
+                mMainActivityViewModel.search(strSearch);//search the user entered string
+                ivSearchIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_close));//Changing icon
+            }else{
+                etSearch.setTextColor(getResources().getColor(R.color.red));
+                MessageUtil.showSnackbarMessage(rootView, "Search can't contain special characters!");
+            }
         }else{//if EditText is empty restore Data Source to original state
             isSearching = false;
+            etSearch.setTextColor(getResources().getColor(R.color.dark));
             ivSearchIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));//Changing icon
             mMainActivityViewModel.restoreOriginalData();//updating DataSource with original data
         }
@@ -113,6 +126,7 @@ public class MainActivity extends BaseActivity implements ItemClickListener {
             isSearching = false;
             strSearch = "";
             etSearch.setText(strSearch);
+            etSearch.setTextColor(getResources().getColor(R.color.dark));
             HelperMethods.hideKeyboard(this);//Closing Keyboard
             ivSearchIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));//Changing icon
             mMainActivityViewModel.restoreOriginalData();//updating DataSource with original data
@@ -125,10 +139,21 @@ public class MainActivity extends BaseActivity implements ItemClickListener {
     }
 
     private void initObjects() {
+        rootView = findViewById(android.R.id.content);
         dialogBuilder = new DialogBuilder(this);//Initializing the DialofBuilder object
         mMainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);//ViewModelProviders provides the MainActivityViewModel object
         adapterData = new ArrayList<>();
         mMainActivityViewModel.init();//init Method Calling
+    }
+
+    private boolean fieldValidation(){
+        return Validations.isObjectNotEmpty(etSearch.getText().toString());
+    }
+
+    private boolean isAlphaNumericAndApaceOnly(String str){
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9 ]*$");
+        Matcher matcher = pattern.matcher(str);
+        return matcher.matches();
     }
 
     private void flipView(int state){//This method flips views between Network availability and unavailability screens
